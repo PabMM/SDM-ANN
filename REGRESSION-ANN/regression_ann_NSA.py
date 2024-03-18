@@ -11,10 +11,15 @@ import timeit
 import numpy as np
 
 import os
-import pathlib
-import sys
-MYPATH=pathlib.Path(__file__).parent.parent.absolute()
-sys.path.append(str(MYPATH))
+
+diractual = os.getcwd()
+print('Current directory: ',diractual)
+dirscript = os.path.dirname(__file__)
+print('Script directory: ', dirscript)
+
+# Changing working directory to the script directory:
+os.chdir(dirscript)
+print('Working directory changed to: ', os.getcwd())
 
 
 
@@ -22,7 +27,7 @@ sys.path.append(str(MYPATH))
 
 # load dataset
 model_name = '2ndSCSDM_SingleBit'
-file_name = os.path.join(MYPATH,'DATASETS/FinalDataSets/dataset_'+model_name+'.csv')
+file_name = 'DATASETS/dataset_'+model_name+'.csv'
 df = read_csv(file_name)
 
 # split into input (x) and output (y) variables
@@ -36,7 +41,7 @@ num_outputs_params = design_vars.shape[1]
 # escale design_vars
 y_scaler = MinMaxScaler((0,1))
 y_scaled = y_scaler.fit_transform(design_vars)
-y_scaler_path = os.path.join(MYPATH,'REGRESSION-ANN/scalers/model_'+model_name+'_scaler.gz')
+y_scaler_path = 'scalers/model_'+model_name+'_scaler.gz'
 dump(y_scaler,y_scaler_path)
 
 # split data into train, validation and test sets
@@ -136,7 +141,7 @@ model = models[0]
 
 
 # Re-Train the model
-callbacks = [keras.callbacks.TensorBoard('REGRESSION-ANN/tb_logs/'+model_name),early_stop]
+callbacks = [keras.callbacks.TensorBoard('tb_logs/'+model_name),early_stop]
 
 tstart = timeit.default_timer()
 model.fit(x_train, y_train, 
@@ -145,13 +150,13 @@ model.fit(x_train, y_train,
 tend = timeit.default_timer()
 ETA = tend - tstart
 print(f'{model_name} re-training time: {ETA:.2f}s')
-model.save('REGRESSION-ANN/models/'+model_name,overwrite= True)
+model.save('models/'+model_name,overwrite= True)
 
 # print model
 print(model.summary())
 
 # plot graph of model
-keras.utils.plot_model(model, to_file='REGRESSION-ANN/models/'+model_name+'.png', show_shapes=True)
+keras.utils.plot_model(model, to_file='models/'+model_name+'.png', show_shapes=True)
 
 
 

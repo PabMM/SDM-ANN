@@ -8,20 +8,25 @@ from sklearn.preprocessing import MinMaxScaler
 # from sklearn.externals import joblib
 import time #To measure fitting time
 from joblib import dump
-import sys
 import os
-import pathlib
-MYPATH=pathlib.Path(__file__).parent.parent.absolute()
-print('Current path: ',MYPATH)
-sys.path.append(str(MYPATH))
 
-from Lib.Lib import calculate_confusion_matrix
-from Lib.Lib import save_model
+diractual = os.getcwd()
+print('Current directory: ',diractual)
+dirscript = os.path.dirname(__file__)
+print('Script directory: ', dirscript)
+
+# Changing working directory to the script directory:
+os.chdir(dirscript)
+print('Working directory changed to: ', os.getcwd())
+
+
+from Lib import calculate_confusion_matrix
+from Lib import save_model
 
 import timeit
 
 #%% datareading and normalizatino
-csv_file=os.path.join(MYPATH,"DATASETS/FinalDataSets/dataset_total_V2.csv")
+csv_file="dataset_total_V2.csv"
 dataframe = pd.read_csv(csv_file)
 
 def print_hash():
@@ -66,7 +71,7 @@ if(input("Perform minmax scaling? [1 for YES]")=="1"):
   scaler=MinMaxScaler()
   scaled_values=scaler.fit_transform(dataframe[Column_Names])
   dataframe[Column_Names]=scaled_values
-  scaler_path = os.path.join(MYPATH,'CLASSIFIERS/model/classifier_scaler.gz')
+  scaler_path = "classifier_scaler.gz"
   dump(scaler,scaler_path)
 print_bar()
 print(dataframe.head(5))
@@ -93,14 +98,14 @@ y=pd.concat((y_train,y_test),axis=0,ignore_index=True)
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 le.fit_transform(dataframe["target"].values)
-classes_path = os.path.join(MYPATH,'CLASSIFIERS/model/classifier_classes.npy')
+classes_path = 'model/classifier_classes.npy'
 np.save(classes_path, le.classes_,allow_pickle=True)
 
 CCM = calculate_confusion_matrix(le.classes_)
 
 # Def function for calculating accuracy and displays
 
-def model_eval(model,x,y_true,model_name,key,PATH):
+def model_eval(model,x,y_true,model_name,key):
   # evaluate model
   tstart = timeit.default_timer()
   y_predict = model.predict(x)
@@ -113,7 +118,7 @@ def model_eval(model,x,y_true,model_name,key,PATH):
   tn = ETA/n
   print(f'{model_name} accuracy on the {key} dataset : {np.mean(scores):.3f} prediction time {ETA:.8f}s, prediction time per point {tn:.8f}s')
   # confusion Matrix
-  CCM.plot_confusion_matrix(y_true,y_predict,model_name,key,PATH)
+  CCM.plot_confusion_matrix(y_true,y_predict,model_name,key)
 
 
 
@@ -128,13 +133,13 @@ tend=time.time()
 ETA=tend-tstart
 print(f'GNB fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(GNBmodel,x_train,y_train,'GNB','Train',MYPATH)
-model_eval(GNBmodel,x_test,y_test,'GNB','Test',MYPATH)
-model_eval(GNBmodel,x,y,'GNB','Whole',MYPATH)
+model_eval(GNBmodel,x_train,y_train,'GNB','Train')
+model_eval(GNBmodel,x_test,y_test,'GNB','Test')
+model_eval(GNBmodel,x,y,'GNB','Whole')
 print_bar()
 
 # save model
-path_save_model = str(MYPATH)+'/CLASSIFIERS/model/'
+path_save_model = 'model/'
 save_model(GNBmodel,'GNB',path_save_model)
 
 #%% Now the logisticRegresion model
@@ -148,9 +153,9 @@ tend=time.time()
 ETA=tend-tstart
 print(f'logreg fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(classifier_logreg,x_train,y_train,'logreg','Train',MYPATH)
-model_eval(classifier_logreg,x_test,y_test,'logreg','Test',MYPATH)
-model_eval(classifier_logreg,x,y,'logreg','Whole',MYPATH)
+model_eval(classifier_logreg,x_train,y_train,'logreg','Train')
+model_eval(classifier_logreg,x_test,y_test,'logreg','Test')
+model_eval(classifier_logreg,x,y,'logreg','Whole')
 print_bar()
 
 # save model
@@ -166,9 +171,9 @@ tend=time.time()
 ETA=tend-tstart
 print(f'MNB fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(classifier_MNB,x_train,y_train,'MNB','Train',MYPATH)
-model_eval(classifier_MNB,x_test,y_test,'MNB','Test',MYPATH)
-model_eval(classifier_MNB,x,y,'MNB','Whole',MYPATH)
+model_eval(classifier_MNB,x_train,y_train,'MNB','Train')
+model_eval(classifier_MNB,x_test,y_test,'MNB','Test')
+model_eval(classifier_MNB,x,y,'MNB','Whole')
 print_bar()
 
 # save model
@@ -185,9 +190,9 @@ tend=time.time()
 ETA=tend-tstart
 print(f'QDA fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(classifier_QDA,x_train,y_train,'QDA','Train',MYPATH)
-model_eval(classifier_QDA,x_test,y_test,'QDA','Test',MYPATH)
-model_eval(classifier_QDA,x,y,'QDA','Whole',MYPATH)
+model_eval(classifier_QDA,x_train,y_train,'QDA','Train')
+model_eval(classifier_QDA,x_test,y_test,'QDA','Test')
+model_eval(classifier_QDA,x,y,'QDA','Whole')
 print_bar()
 
 # save model
@@ -204,9 +209,9 @@ tend=time.time()
 ETA=tend-tstart
 print(f'RF fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(classifier_RF,x_train,y_train,'RF','Train',MYPATH)
-model_eval(classifier_RF,x_test,y_test,'RF','Test',MYPATH)
-model_eval(classifier_RF,x,y,'RF','Whole',MYPATH)
+model_eval(classifier_RF,x_train,y_train,'RF','Train')
+model_eval(classifier_RF,x_test,y_test,'RF','Test')
+model_eval(classifier_RF,x,y,'RF','Whole')
 print_bar()
 
 # save model
@@ -222,9 +227,9 @@ tend=time.time()
 LDATime=tend-tstart
 print(f'LDA fitting time {LDATime:.3f}s')
 #Evaluate model
-model_eval(LDAmodel,x_train,y_train,'LDA','Train',MYPATH)
-model_eval(LDAmodel,x_test,y_test,'LDA','Test',MYPATH)
-model_eval(LDAmodel,x,y,'LDA','Whole',MYPATH)
+model_eval(LDAmodel,x_train,y_train,'LDA','Train')
+model_eval(LDAmodel,x_test,y_test,'LDA','Test')
+model_eval(LDAmodel,x,y,'LDA','Whole')
 print_bar()
 
 # save model
@@ -241,9 +246,9 @@ tend=time.time()
 ETA = tend-tstart
 print(f'DT fitting time {ETA:.3f}s')
 #Evaluate model
-model_eval(DTmodel,x_train,y_train,'DT','Train',MYPATH)
-model_eval(DTmodel,x_test,y_test,'DT','Test',MYPATH)
-model_eval(DTmodel,x,y,'DT','Whole',MYPATH)
+model_eval(DTmodel,x_train,y_train,'DT','Train')
+model_eval(DTmodel,x_test,y_test,'DT','Test')
+model_eval(DTmodel,x,y,'DT','Whole')
 print_bar()
 
 # save model
@@ -305,9 +310,9 @@ if(input("Adjust learning rate in Gradient Boosting Classifier or use default va
   BestModelGB = GB_model[BestPerformingGB]
   print(f'GB fitting time {BestGBTime:.3f}s')
   #Evaluate model
-  model_eval(BestModelGB,x_train,y_train,'GB','Train',MYPATH)
-  model_eval(BestModelGB,x_test,y_test,'GB','Test',MYPATH)
-  model_eval(BestModelGB,x,y,'GB','Whole',MYPATH)
+  model_eval(BestModelGB,x_train,y_train,'GB','Train')
+  model_eval(BestModelGB,x_test,y_test,'GB','Test')
+  model_eval(BestModelGB,x,y,'GB','Whole')
   print_bar()
 
   # save model
@@ -321,9 +326,9 @@ else:
   ThisTime=tend-tstart
   predictionsGB=GBModel.predict(x_test)
   scoresGB = np.mean(accuracy_score(y_test, predictionsGB))
-  model_eval(GBModel,x_train,y_train,'GB','Train',MYPATH)
-  model_eval(GBModel,x_test,y_test,'GB','Test',MYPATH)
-  model_eval(GBModel,x,y,'GB','Whole',MYPATH)
+  model_eval(GBModel,x_train,y_train,'GB','Train')
+  model_eval(GBModel,x_test,y_test,'GB','Test')
+  model_eval(GBModel,x,y,'GB','Whole')
   print(f' Gradient Boosting Classifier accuracy on the test data: {scoresGB:.3f} execution time {ThisTime:.3f}s')    
   print_bar()
   save_model(GBModel,'GB',path_save_model)
@@ -394,7 +399,7 @@ y_pred_binary_integer_test = np.argmax(y_pred_binary_test, axis=1)
 
 # Compute confusion matrices
 
-CCM.plot_confusion_matrix(Y_test_integer_test,y_pred_binary_integer_test,'ANN','Test',MYPATH)
-CCM.plot_confusion_matrix(Y_test_integer,y_pred_binary_integer,'ANN','Total',MYPATH)
+CCM.plot_confusion_matrix(Y_test_integer_test,y_pred_binary_integer_test,'ANN','Test')
+CCM.plot_confusion_matrix(Y_test_integer,y_pred_binary_integer,'ANN','Total')
 
 save_model(model,'ANN',path_save_model)
