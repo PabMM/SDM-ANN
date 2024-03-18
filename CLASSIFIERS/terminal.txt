@@ -1,0 +1,157 @@
+cd /home/pmanrique/Documentos/GH ; /usr/bin/env /home/pmanrique/Documentos/GH/aihubvenv/bin/python /home/pmanrique/.vscode/extensions/ms-python.debugpy-2024.2.0-linux-x64/bundled/libs/debugpy/adapter/../../debugpy/launcher 38733 -- /home/pmanrique/Documentos/GH/AIHUB/CLASSIFIERS/classifiers.py 
+Current path:  /home/pmanrique/Documentos/GH/AIHUB
+########################################
+5 models
+________________________________________
+Model name: 2ndSCSDM_SingleBit
+Model name: 2ndSCSDM_MultiBit
+Model name: 2ndGmCSDM_V2
+Model name: 3rd21SCSDM
+Model name: 4th211SCSDM
+########################################
+Variable Name: SNR
+Variable Name: Bw
+Variable Name: Power
+________________________________________
+Perform minmax scaling? [1 for YES]1
+________________________________________
+        SNR        Bw     Power              target
+0  0.023683  0.000074  0.130275  2ndSCSDM_SingleBit
+1  0.036683  0.000295  0.002550  2ndSCSDM_SingleBit
+2  0.112517  0.000017  0.118614  2ndSCSDM_SingleBit
+3  0.161397  0.000080  0.023097  2ndSCSDM_SingleBit
+4  0.108442  0.000328  0.019641  2ndSCSDM_SingleBit
+________________________________________
+All models will be trained for 3 input(s) and 1 output(s)
+GNB fitting time 0.024s
+GNB accuracy on the Train dataset : 0.439 prediction time 0.00522533s, prediction time per point 0.00000016s
+GNB accuracy on the Test dataset : 0.443 prediction time 0.00211429s, prediction time per point 0.00000025s
+GNB accuracy on the Whole dataset : 0.440 prediction time 0.00483944s, prediction time per point 0.00000011s
+________________________________________
+logreg fitting time 0.139s
+logreg accuracy on the Train dataset : 0.419 prediction time 0.00291529s, prediction time per point 0.00000009s
+logreg accuracy on the Test dataset : 0.416 prediction time 0.00168200s, prediction time per point 0.00000020s
+logreg accuracy on the Whole dataset : 0.418 prediction time 0.00797515s, prediction time per point 0.00000019s
+________________________________________
+MNB fitting time 0.051s
+MNB accuracy on the Train dataset : 0.344 prediction time 0.00326484s, prediction time per point 0.00000010s
+MNB accuracy on the Test dataset : 0.340 prediction time 0.00190022s, prediction time per point 0.00000023s
+MNB accuracy on the Whole dataset : 0.343 prediction time 0.00400263s, prediction time per point 0.00000010s
+________________________________________
+QDA fitting time 0.022s
+QDA accuracy on the Train dataset : 0.395 prediction time 0.01596801s, prediction time per point 0.00000047s
+QDA accuracy on the Test dataset : 0.384 prediction time 0.00248000s, prediction time per point 0.00000029s
+QDA accuracy on the Whole dataset : 0.393 prediction time 0.00706552s, prediction time per point 0.00000017s
+________________________________________
+RF fitting time 0.900s
+RF accuracy on the Train dataset : 0.998 prediction time 0.10180134s, prediction time per point 0.00000302s
+RF accuracy on the Test dataset : 0.633 prediction time 0.02950702s, prediction time per point 0.00000350s
+RF accuracy on the Whole dataset : 0.925 prediction time 0.12012252s, prediction time per point 0.00000285s
+________________________________________
+LDA fitting time 0.042s
+LDA accuracy on the Train dataset : 0.398 prediction time 0.02219836s, prediction time per point 0.00000066s
+LDA accuracy on the Test dataset : 0.392 prediction time 0.00170273s, prediction time per point 0.00000020s
+LDA accuracy on the Whole dataset : 0.397 prediction time 0.00407001s, prediction time per point 0.00000010s
+________________________________________
+DT fitting time 0.154s
+DT accuracy on the Train dataset : 1.000 prediction time 0.00600417s, prediction time per point 0.00000018s
+DT accuracy on the Test dataset : 0.577 prediction time 0.00268834s, prediction time per point 0.00000032s
+DT accuracy on the Whole dataset : 0.915 prediction time 0.00690716s, prediction time per point 0.00000016s
+________________________________________
+________________________________________
+Adjust learning rate in Gradient Boosting Classifier or use default value?(1-Yes)1
+Learning rate 0.02, accuracy 0.5920208976490144
+Learning rate 0.04512820512820513, accuracy 0.6332225124673474
+Learning rate 0.07025641025641026, accuracy 0.6472334362384232
+Learning rate 0.09538461538461539, accuracy 0.6467584896699121
+Learning rate 0.12051282051282051, accuracy 0.6518641652814059
+Learning rate 0.14564102564102563, accuracy 0.6513892187128948
+Learning rate 0.17076923076923076, accuracy 0.6525765851341724
+Learning rate 0.19589743589743588, accuracy 0.6530515317026835
+Learning rate 0.221025641025641, accuracy 0.6518641652814059
+Learning rate 0.24615384615384614, accuracy 0.65376395155545
+Learning rate 0.2712820512820513, accuracy 0.653289004986939
+Learning rate 0.2964102564102564, accuracy 0.6530515317026835
+Learning rate 0.32153846153846155, accuracy 0.6534077416290668
+Learning rate 0.3466666666666667, accuracy 0.6511517454286393
+Learning rate 0.3717948717948718, accuracy 0.6521016385656614
+Learning rate 0.39692307692307693, accuracy 0.6530515317026835
+Learning rate 0.42205128205128206, accuracy 0.6538826881975778
+Learning rate 0.4471794871794872, accuracy 0.6524578484920447
+Learning rate 0.4723076923076923, accuracy 0.6521016385656614
+Learning rate 0.49743589743589745, accuracy 0.6505580622180005
+Learning rate 0.5225641025641026, accuracy 0.6505580622180005
+Learning rate 0.5476923076923077, accuracy 0.6481833293754453
+Learning rate 0.5728205128205128, accuracy 0.6462835431014011
+Learning rate 0.597948717948718, accuracy 0.6485395393018285
+Learning rate 0.6230769230769231, accuracy 0.648302066017573
+Learning rate 0.6482051282051282, accuracy 0.6502018522916172
+Learning rate 0.6733333333333333, accuracy 0.6471146995962954
+Learning rate 0.6984615384615385, accuracy 0.6487770125860841
+Learning rate 0.7235897435897436, accuracy 0.6485395393018285
+Learning rate 0.7487179487179487, accuracy 0.6469959629541676
+Learning rate 0.7738461538461539, accuracy 0.6467584896699121
+Learning rate 0.798974358974359, accuracy 0.64580859653289
+Learning rate 0.8241025641025641, accuracy 0.6462835431014011
+Learning rate 0.8492307692307692, accuracy 0.6465210163856566
+Learning rate 0.8743589743589744, accuracy 0.6446212301116124
+Learning rate 0.8994871794871795, accuracy 0.6465210163856566
+Learning rate 0.9246153846153846, accuracy 0.6461648064592733
+Learning rate 0.9497435897435897, accuracy 0.6434338636903348
+Learning rate 0.9748717948717949, accuracy 0.6415340774162906
+Learning rate 1.0, accuracy 0.6409403942056519
+GB fitting time 6.679s
+GB accuracy on the Train dataset : 0.675 prediction time 0.09424193s, prediction time per point 0.00000280s
+GB accuracy on the Test dataset : 0.654 prediction time 0.02461987s, prediction time per point 0.00000292s
+GB accuracy on the Whole dataset : 0.671 prediction time 0.11331978s, prediction time per point 0.00000269s
+________________________________________
+2024-03-14 09:47:48.901159: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-03-14 09:47:48.901176: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-03-14 09:47:48.904316: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-03-14 09:47:48.915918: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-03-14 09:47:50.572810: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+TensorFlow version: 2.15.0
+2024-03-14 09:47:51.793895: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.162461: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.162731: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.164362: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.164556: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.164651: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.263724: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.263871: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.263972: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:901] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-03-14 09:47:52.264044: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1929] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 6698 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 2080 SUPER, pci bus id: 0000:01:00.0, compute capability: 7.5
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ batch_normalization (Batch  (None, 3)                 12        
+ Normalization)                                                  
+                                                                 
+ dense (Dense)               (None, 256)               1024      
+                                                                 
+ dropout (Dropout)           (None, 256)               0         
+                                                                 
+ dense_1 (Dense)             (None, 238)               61166     
+                                                                 
+ dropout_1 (Dropout)         (None, 238)               0         
+                                                                 
+ dense_2 (Dense)             (None, 5)                 1195      
+                                                                 
+=================================================================
+Total params: 63397 (247.64 KB)
+Trainable params: 63391 (247.62 KB)
+Non-trainable params: 6 (24.00 Byte)
+_________________________________________________________________
+None
+2024-03-14 09:47:54.120838: I external/local_xla/xla/service/service.cc:168] XLA service 0x7f282584f390 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2024-03-14 09:47:54.120856: I external/local_xla/xla/service/service.cc:176]   StreamExecutor device (0): NVIDIA GeForce RTX 2080 SUPER, Compute Capability 7.5
+2024-03-14 09:47:54.124286: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2024-03-14 09:47:54.150490: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:454] Loaded cuDNN version 8904
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1710406074.211773  727413 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+132/132 [==============================] - 0s 1ms/step - loss: 1.1041 - accuracy: 0.5259
+Tensorflow Network trained with 0.53 accuracy on the test data
+1316/1316 [==============================] - 2s 1ms/step
+264/264 [==============================] - 0s 1ms/step
