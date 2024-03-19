@@ -1,0 +1,12 @@
+# Common libraries
+numpy
+pandas
+scikit-learn
+matplotlib
+joblib
+
+# TensorFlow and Keras
+tensorflow
+keras-tuner
+
+# Add more libraries as needed
