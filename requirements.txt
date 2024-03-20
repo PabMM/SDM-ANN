@@ -4,6 +4,7 @@ pandas
 scikit-learn
 matplotlib
 joblib
+seaborn
 
 # TensorFlow and Keras
 tensorflow

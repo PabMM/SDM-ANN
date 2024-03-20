@@ -1,12 +1,12 @@
 # Data processing
 
-The script `dataset_processing.py` loads the datasets in the directory `utils/DATASET0/`. To use a different set of datasets, it is enough to add a new directory `utils/<new_dir_name>/` containing the new `.csv` files and change the folder name in line 14.
+The script `dataset_processing.py` loads the datasets in the directory `utils/DATASET0/`.
 
 ## Filtering by SNR: RNN datasets
 
-For each given dataset, we create a new dataset whose points are those such that 50 < SNR < 150. These bounds can also be modified in lines 34 and 35.
+For each given dataset, we create a new dataset whose points are those such that SNR_min < SNR < SNR_max. These bounds must by specified by the user (default values are (50,150)).
 
-The obtained datasets will be used to train the RNN; `dataset_processing.py` saves them in the folder `REGRESSION-ANN/DATASET0/`. Of course, if we are using another folder, it will create the corresponding subfolder in `REGRESSION-ANN/`.
+The obtained datasets will be used to train the RNN; `dataset_processing.py` saves them in the folder `REGRESSION-ANN/DATASET0/`.
 
 ## Total classifiers dataset
 

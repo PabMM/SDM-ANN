@@ -11,8 +11,9 @@ os.chdir(dirrepo)
 # %% Load datasets
 # The default datasets folder name is 'DATASET0/'. If dataset files are in other folder, replace the next line by
 # '<folder_name>/'. 
-datasetfolder = 'DATASET0/'
-datasetspath = 'utils/' + datasetfolder
+datasetrawfolder = 'DATASET-raw/'
+datasetfolder = 'DATASET/'
+datasetspath = 'utils/' + datasetrawfolder
 datasetfiles = os.listdir(datasetspath)
 
 dataframes = []
@@ -30,9 +31,23 @@ def filter_snr(df,snr_min,snr_max):
     filtered_df = df[idx]
     return filtered_df
 
-# We want to get points with SNR between 50 and 150. Params snr_min and snr_max can be modified
-snr_min = 50
-snr_max = 150
+# SNR bounds
+
+print('Specify SNR bounds. If inputs are not numbers, default values are (50,150) ')
+try:
+    snr_min = float(input('Minimum SNR value (dB): '))
+    print('Your choice: {}'.format(snr_min))
+except ValueError:
+    snr_min = 50
+    print('Input is not a number. Minimum SNR set to 50 dB.')
+
+try:
+    snr_max = float(input('Maximum SNR value (dB): '))
+    print('Your choice: {}'.format(snr_max))
+except ValueError:
+    snr_min = 150
+    print('Input is not a number. Maximum SNR set to 150 dB.')
+
 filtereddataframes = [filter_snr(df,snr_min=snr_min,snr_max=snr_max) for df in dataframes]
 
 # %% Saving RNN training datasets
@@ -43,6 +58,8 @@ rnndatasetspath = 'REGRESSION-ANN/' + datasetfolder
 # Verifying if the directory exists. If not, create it
 if not os.path.exists(rnndatasetspath):
     os.makedirs(rnndatasetspath)
+
+print('\nSaving RNN datasets...\n')
 
 for i in range(num_dfs):
     df = filtereddataframes[i]
@@ -71,15 +88,19 @@ for i in range(num_dfs):
 # Final result
 df_total = pd.concat(modeldataframes)
 
+print('Saving Classifiers dataset...\n')
+
 # %% Saving total dataset
 clsfpath = 'CLASSIFIERS/'
-clsfdatasetpath = clsfpath + 'CLSF_total_' + datasetfolder.replace('/','') + '.csv'
+clsfdatasetpath = clsfpath + 'CLSF_total_dataset.csv'
 df_total.to_csv(clsfdatasetpath, index=False)
 
 # %% Plotting the final classifiers dataset
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+
+print('Generating and saving plots...\n')
 
 fig = plt.figure(figsize=(15, 15))
 ax = fig.add_subplot(221, projection='3d')
@@ -136,7 +157,7 @@ plt.title(datasetfolder.replace('/',''))
 
 # Save the plot
 plotpath = 'CLASSIFIERS/plots/'
-scatterpath = plotpath + 'scatter/' + datasetfolder.replace('/','') + '.png'
+scatterpath = plotpath + 'scatter/CLSF_total_dataset_scatter.png'
 plt.savefig(scatterpath)
 
 plt.clf()
@@ -168,5 +189,5 @@ plt.xlabel('FOM (dB)')
 plt.title(datasetfolder.replace('/',''))
 
 # Saving data
-histogrampath = plotpath + 'FOMhistogram/' + datasetfolder.replace('/','') + '.png'
+histogrampath = plotpath + 'FOMhistogram/CLSF_total_dataset_histogram.png'
 plt.savefig(histogrampath)
