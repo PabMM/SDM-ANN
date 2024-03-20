@@ -13,7 +13,7 @@ os.chdir(dirrepo)
 # '<folder_name>/'. 
 datasetrawfolder = 'DATASET-raw/'
 datasetfolder = 'DATASET/'
-datasetspath = 'utils/' + datasetrawfolder
+datasetspath = 'PROCESSING/' + datasetrawfolder
 datasetfiles = os.listdir(datasetspath)
 
 dataframes = []
