@@ -80,11 +80,11 @@ def build_model(hp):
     Returns:
     - model: Keras model.
     """
-    units = hp.Int("units", min_value=32, max_value=64, step=32)
-    num_layers = hp.Int("num_layers", 1, 2) 
+    units = hp.Int("units", min_value=32, max_value=64, step=4)
+    num_layers = hp.Int("num_layers", 1, 6) 
     dropout = hp.Boolean("dropout")
-    activation = hp.Choice("activation", ["relu"]) # , "tanh"])
-    optimizer = hp.Choice("optimizer", ["adam"]) # , "SGD", "RMSprop", "Adadelta"])
+    activation = hp.Choice("activation", ["relu", "tanh"])
+    optimizer = hp.Choice("optimizer", ["adam", "SGD", "RMSprop", "Adadelta"])
     # call existing model-building code with the hyperparameter values.
     model = call_existing_code(units=units,num_layers=num_layers,dropout=dropout,activation=activation,optimizer=optimizer)
     return model
@@ -94,95 +94,96 @@ def build_model(hp):
 datasetfolder = 'DATASET/'
 datasetfiles = os.listdir(datasetfolder)
 
-for file in datasetfiles:
-    file_name = datasetfolder + file
-    model_name = file.replace('.csv','')
-    df = read_csv(file_name)
+#for file in datasetfiles:
+file = datasetfiles[-1]
+file_name = datasetfolder + file
+model_name = file.replace('.csv','')
+df = read_csv(file_name)
 
-    # split into input (x) and output (y) variables
-    specs_columns = df[['SNR','Bw','Power']].values
-    design_vars = df.drop(['SNR', 'Bw','Power'], axis=1).values
-
-
-    num_inputs = specs_columns.shape[1] #specs should be the same regardless the architecture
-    num_outputs_params = design_vars.shape[1]
-
-    # escale design_vars
-    y_scaler = MinMaxScaler((0,1))
-    y_scaled = y_scaler.fit_transform(design_vars)
-    y_scaler_path = 'scalers/model_'+model_name+'_scaler.gz'
-    dump(y_scaler,y_scaler_path)
-
-    # split data into train, validation and test sets
-    x_train, x_val, y_train, y_val = train_test_split(specs_columns, y_scaled, test_size=0.2, random_state=1)
-    x_val, x_test, y_val, y_test = train_test_split(x_val, y_val, test_size=0.2, random_state=1)
+# split into input (x) and output (y) variables
+specs_columns = df[['SNR','Bw','Power']].values
+design_vars = df.drop(['SNR', 'Bw','Power'], axis=1).values
 
 
+num_inputs = specs_columns.shape[1] #specs should be the same regardless the architecture
+num_outputs_params = design_vars.shape[1]
 
-    build_model(keras_tuner.HyperParameters())
+# escale design_vars
+y_scaler = MinMaxScaler((0,1))
+y_scaled = y_scaler.fit_transform(design_vars)
+y_scaler_path = 'scalers/model_'+model_name+'_scaler.gz'
+dump(y_scaler,y_scaler_path)
 
-    # callbacks
-    early_stop = keras.callbacks.EarlyStopping(monitor='loss', patience=50, min_delta=0.000001,restore_best_weights=True,verbose = 1)
-
-    # Start the search
-    tuner = keras_tuner.GridSearch(
-        hypermodel=build_model,
-        objective="val_loss",
-        max_trials=130,
-        executions_per_trial=2,
-        overwrite=False,
-        #    directory=os.getcwd(),
-        project_name='NSA/'+model_name,
-    )
-
-    tuner.search_space_summary()
-    tuner.search(x_train, y_train, 
-                 validation_data=(x_val,y_val),epochs=1, batch_size=256,verbose=2,callbacks=[early_stop])
-    tuner.results_summary()
-
-    # Query the results 
-    models = tuner.get_best_models(num_models=30)
-    model = models[0]
+# split data into train, validation and test sets
+x_train, x_val, y_train, y_val = train_test_split(specs_columns, y_scaled, test_size=0.2, random_state=1)
+x_val, x_test, y_val, y_test = train_test_split(x_val, y_val, test_size=0.2, random_state=1)
 
 
 
-    # Re-Train the model
-    callbacks = [keras.callbacks.TensorBoard('tb_logs/'+model_name),early_stop]
+build_model(keras_tuner.HyperParameters())
 
-    tstart = timeit.default_timer()
-    model.fit(x_train, y_train, 
-                 validation_data=(x_val,y_val),epochs=2, batch_size=256,callbacks = callbacks,verbose=1)
+# callbacks
+early_stop = keras.callbacks.EarlyStopping(monitor='loss', patience=50, min_delta=0.000001,restore_best_weights=True,verbose = 1)
 
-    tend = timeit.default_timer()
-    ETA = tend - tstart
-    print(f'{model_name} re-training time: {ETA:.2f}s')
-    model.save('models/'+model_name,overwrite= True)
+# Start the search
+tuner = keras_tuner.GridSearch(
+    hypermodel=build_model,
+    objective="val_loss",
+    max_trials=130,
+    executions_per_trial=2,
+    overwrite=False,
+    #    directory=os.getcwd(),
+    project_name='NSA/'+model_name,
+)
 
-    # print model
-    print(model.summary())
+tuner.search_space_summary()
+tuner.search(x_train, y_train, 
+                validation_data=(x_val,y_val),epochs=100, batch_size=256,verbose=2,callbacks=[early_stop])
+tuner.results_summary()
 
-    # plot graph of model
-    #keras.utils.plot_model(model, to_file='models/'+model_name+'.png', show_shapes=True)
-
-
-
-    # make predictions on test set
-    # eval_results
-    tstart = timeit.default_timer()
-    eval_results = model.evaluate(x_test,y_test,verbose=0)
-    tend = timeit.default_timer()
-    ETA = tend-tstart
-    print(f'Inference time: {ETA:.8f}s. Per iteration: {ETA/np.size(x_test):.8f}s')
-    print('MSE test set: %.3f' % eval_results[1])
+# Query the results 
+models = tuner.get_best_models(num_models=30)
+model = models[0]
 
 
-    # make predictions on total data set
-    # eval_results
-    eval_results = model.evaluate(x_train,y_train,verbose=0)
 
-    print('MSE train set: %.3f' % eval_results[1])
+# Re-Train the model
+callbacks = [keras.callbacks.TensorBoard('tb_logs/'+model_name),early_stop]
 
-    print('_________________________________________________________________________________________________')
-    print(f'Model trained and saved for the {model_name} SDM architecture')
+tstart = timeit.default_timer()
+model.fit(x_train, y_train, 
+                validation_data=(x_val,y_val),epochs=2000, batch_size=256,callbacks = callbacks,verbose=1)
+
+tend = timeit.default_timer()
+ETA = tend - tstart
+print(f'{model_name} re-training time: {ETA:.2f}s')
+model.save('models/'+model_name,overwrite= True)
+
+# print model
+print(model.summary())
+
+# plot graph of model
+keras.utils.plot_model(model, to_file='models/'+model_name+'.png', show_shapes=True)
+
+
+
+# make predictions on test set
+# eval_results
+tstart = timeit.default_timer()
+eval_results = model.evaluate(x_test,y_test,verbose=0)
+tend = timeit.default_timer()
+ETA = tend-tstart
+print(f'Inference time: {ETA:.8f}s. Per iteration: {ETA/np.size(x_test):.8f}s')
+print('MSE test set: %.3f' % eval_results[1])
+
+
+# make predictions on total data set
+# eval_results
+eval_results = model.evaluate(x_train,y_train,verbose=0)
+
+print('MSE train set: %.3f' % eval_results[1])
+
+print('_________________________________________________________________________________________________')
+print(f'Model trained and saved for the {model_name} SDM architecture')
 
 exit('__________________________________________________________________________________________________')

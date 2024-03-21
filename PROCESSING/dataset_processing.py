@@ -45,10 +45,17 @@ try:
     snr_max = float(input('Maximum SNR value (dB): '))
     print('Your choice: {}'.format(snr_max))
 except ValueError:
-    snr_min = 150
+    snr_max = 150
     print('Input is not a number. Maximum SNR set to 150 dB.')
 
 filtereddataframes = [filter_snr(df,snr_min=snr_min,snr_max=snr_max) for df in dataframes]
+
+# If both exist, delete one of the columns OSR or fs (they are correlated by Bw)
+for i in range(len(filtereddataframes)):
+    filtereddf = filtereddataframes[i]
+    if ('OSR' in filtereddf.columns) & ('fs' in filtereddf.columns):
+        filtereddf = filtereddf.drop('fs', axis=1)
+        filtereddataframes[i] = filtereddf 
 
 # %% Saving RNN training datasets
 # Dataframes in filtereddataframes are the datasets that we will use for training the networks
