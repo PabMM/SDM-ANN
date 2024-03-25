@@ -41,7 +41,7 @@ def random_factor(value, range_val=0.05):
 # Vectorize the random_factor function
 random_factor_vec = np.vectorize(random_factor)
 
-def validation_SC(df_val, model_name, classifier_model=''):
+def validation_SC(df_val, model_name, classifier_model='', PATH='.'):
     """
     Perform validation using a classifier model.
 
@@ -88,7 +88,7 @@ def validation_SC(df_val, model_name, classifier_model=''):
         specs_val = df_val[['SNR', 'Bw', 'Power']]
         df_predict = pd.concat([specs_val.reset_index(drop=True), y_reg_predict.reset_index(drop=True)],
                               axis=1)
-        df_predict.to_csv(f'/VAL-DS/Multiple-Iterations-ANN/classifier{classifier_model}_{model_name}_val_{i + 1}.csv', index=False)
+        df_predict.to_csv(PATH + '/VAL-DS/Multiple-Iterations-ANN/classifier'+classifier_model+'_'+model_name+'_val_'+str(i + 1)+'.csv', index=False)
 
 #%% Validation data set
 dataset_folder = 'DATASET/'
