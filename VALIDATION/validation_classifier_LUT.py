@@ -99,6 +99,14 @@ def validation_SC(df_val, model_name, classifier_model='',PATH='.'):
     for name in ['SNR', 'Bw', 'Power']:
         dv_name.remove(name)
 
+    # Unscaling design vars
+    df_specs = df[['SNR','Bw','Power']]
+    df_dvars = df.drop(columns=['SNR','Bw','Power']).values
+    y_scaler = joblib.load('../REGRESSION-ANN/scalers/model_RNN_'+model_name+'_scaler.gz')
+    scaled_dvars = y_scaler.inverse_transform(df_dvars)
+    scaled_dvars = pd.DataFrame(scaled_dvars)
+    df = pd.concat([df_specs,scaled_dvars],axis=1)
+
     num_iterations = 10
     print('Making predictions...')
     specs_val = df_val[['SNR', 'Bw', 'Power']].values
@@ -126,6 +134,7 @@ for file in os.listdir(dataset_folder):
     data = data[['SNR','Bw','Power']]
     datalist = datalist + [data]
 df_val = pd.concat(datalist,axis=0)
+
 
 # Encoder
 encoder = LabelEncoder()
