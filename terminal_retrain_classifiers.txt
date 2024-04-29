@@ -1,0 +1,140 @@
+Current directory:  C:\Users\pablo\Documents\VENV-IMSE
+Script directory:  c:\Users\pablo\Documents\VENV-IMSE\SDM-ANN\CLASSIFIERS
+Working directory changed to:  c:\Users\pablo\Documents\VENV-IMSE\SDM-ANN\CLASSIFIERS
+########################################
+5 models
+________________________________________
+Model name: 2ndGmCSDM
+Model name: 2ndSCSDM_MultiBit
+Model name: 2ndSCSDM_SingleBit
+Model name: 3rd21SCSDM
+Model name: 4th211SCSDM
+########################################
+Variable Name: SNR
+Variable Name: Bw
+Variable Name: Power
+________________________________________
+Perform minmax scaling? [1 for YES]1
+________________________________________
+        SNR        Bw     Power     target
+0  0.342218  0.010567  0.016533  2ndGmCSDM
+1  0.268935  0.000872  0.052935  2ndGmCSDM
+2  0.468490  0.035097  0.094399  2ndGmCSDM
+3  0.336785  0.009359  0.244086  2ndGmCSDM
+4  0.128790  0.004394  0.014813  2ndGmCSDM
+________________________________________
+All models will be trained for 3 input(s) and 1 output(s)
+GNB fitting time 0.031s
+GNB accuracy on the Train dataset : 0.418 prediction time 0.00704770s, prediction time per point 0.00000021s
+GNB accuracy on the Test dataset : 0.417 prediction time 0.00265050s, prediction time per point 0.00000031s
+GNB accuracy on the Whole dataset : 0.418 prediction time 0.00837350s, prediction time per point 0.00000020s
+________________________________________
+logreg fitting time 0.260s
+logreg accuracy on the Train dataset : 0.355 prediction time 0.00524710s, prediction time per point 0.00000016s
+logreg accuracy on the Test dataset : 0.349 prediction time 0.00178420s, prediction time per point 0.00000021s
+logreg accuracy on the Whole dataset : 0.354 prediction time 0.00411070s, prediction time per point 0.00000010s
+________________________________________
+MNB fitting time 0.054s
+MNB accuracy on the Train dataset : 0.321 prediction time 0.00460670s, prediction time per point 0.00000014s
+MNB accuracy on the Test dataset : 0.312 prediction time 0.00180010s, prediction time per point 0.00000021s
+MNB accuracy on the Whole dataset : 0.319 prediction time 0.00488490s, prediction time per point 0.00000012s
+________________________________________
+QDA fitting time 0.035s
+QDA accuracy on the Train dataset : 0.308 prediction time 0.01027890s, prediction time per point 0.00000031s
+QDA accuracy on the Test dataset : 0.300 prediction time 0.00215670s, prediction time per point 0.00000026s
+QDA accuracy on the Whole dataset : 0.306 prediction time 0.01290190s, prediction time per point 0.00000031s
+________________________________________
+RF fitting time 1.550s
+RF accuracy on the Train dataset : 0.998 prediction time 0.15941630s, prediction time per point 0.00000473s
+RF accuracy on the Test dataset : 0.585 prediction time 0.05729380s, prediction time per point 0.00000680s
+RF accuracy on the Whole dataset : 0.915 prediction time 0.22143480s, prediction time per point 0.00000526s
+________________________________________
+LDA fitting time 0.056s
+LDA accuracy on the Train dataset : 0.344 prediction time 0.00439340s, prediction time per point 0.00000013s
+LDA accuracy on the Test dataset : 0.341 prediction time 0.00173190s, prediction time per point 0.00000021s
+LDA accuracy on the Whole dataset : 0.343 prediction time 0.00520710s, prediction time per point 0.00000012s
+________________________________________
+DT fitting time 0.205s
+DT accuracy on the Train dataset : 1.000 prediction time 0.00734690s, prediction time per point 0.00000022s
+DT accuracy on the Test dataset : 0.509 prediction time 0.00268070s, prediction time per point 0.00000032s
+DT accuracy on the Whole dataset : 0.902 prediction time 0.00907500s, prediction time per point 0.00000022s
+________________________________________
+________________________________________
+Adjust learning rate in Gradient Boosting Classifier or use default value?(1-Yes)1
+Learning rate 0.02, accuracy 0.533721206364284
+Learning rate 0.04512820512820513, accuracy 0.5636428401804797
+Learning rate 0.07025641025641026, accuracy 0.5752790311090002
+Learning rate 0.09538461538461539, accuracy 0.5878651151745429
+Learning rate 0.12051282051282051, accuracy 0.5924958442175255
+Learning rate 0.14564102564102563, accuracy 0.5923771075753977
+Learning rate 0.17076923076923076, accuracy 0.5941581572073141
+Learning rate 0.19589743589743588, accuracy 0.5961766801234861
+Learning rate 0.221025641025641, accuracy 0.5951080503443362
+Learning rate 0.24615384615384614, accuracy 0.5947518404179529
+Learning rate 0.2712820512820513, accuracy 0.5954642602707195
+Learning rate 0.2964102564102564, accuracy 0.5948705770600807
+Learning rate 0.32153846153846155, accuracy 0.5970078366183804
+Learning rate 0.3466666666666667, accuracy 0.5968890999762527
+Learning rate 0.3717948717948718, accuracy 0.5941581572073141
+Learning rate 0.39692307692307693, accuracy 0.5942768938494419
+Learning rate 0.42205128205128206, accuracy 0.5951080503443362
+Learning rate 0.4471794871794872, accuracy 0.5972453099026359
+Learning rate 0.4723076923076923, accuracy 0.5955829969128473
+Learning rate 0.49743589743589745, accuracy 0.5919021610068868
+Learning rate 0.5225641025641026, accuracy 0.5941581572073141
+Learning rate 0.5476923076923077, accuracy 0.5933270007124198
+Learning rate 0.5728205128205128, accuracy 0.595226786986464
+Learning rate 0.597948717948718, accuracy 0.5945143671336974
+Learning rate 0.6230769230769231, accuracy 0.5932082640702921
+Learning rate 0.6482051282051282, accuracy 0.5926145808596532
+Learning rate 0.6733333333333333, accuracy 0.5894086915222038
+Learning rate 0.6984615384615385, accuracy 0.5935644739966753
+Learning rate 0.7235897435897436, accuracy 0.5923771075753977
+Learning rate 0.7487179487179487, accuracy 0.5916646877226313
+Learning rate 0.7738461538461539, accuracy 0.588815008311565
+Learning rate 0.798974358974359, accuracy 0.5905960579434814
+Learning rate 0.8241025641025641, accuracy 0.5916646877226313
+Learning rate 0.8492307692307692, accuracy 0.5883400617430539
+Learning rate 0.8743589743589744, accuracy 0.5902398480170981
+Learning rate 0.8994871794871795, accuracy 0.5908335312277369
+Learning rate 0.9246153846153846, accuracy 0.59225837093327
+Learning rate 0.9497435897435897, accuracy 0.5908335312277369
+Learning rate 0.9748717948717949, accuracy 0.5921396342911422
+Learning rate 1.0, accuracy 0.5911897411541202
+GB fitting time 9.319s
+GB accuracy on the Train dataset : 0.627 prediction time 0.11617030s, prediction time per point 0.00000345s
+GB accuracy on the Test dataset : 0.597 prediction time 0.02961680s, prediction time per point 0.00000352s
+GB accuracy on the Whole dataset : 0.621 prediction time 0.14277720s, prediction time per point 0.00000339s
+________________________________________
+2024-04-29 10:23:05.161397: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-04-29 10:23:11.072937: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+TensorFlow version: 2.16.1
+2024-04-29 10:23:24.911091: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+C:\Users\pablo\Documents\VENV-IMSE\.venv\Lib\site-packages\keras\src\layers\normalization\batch_normalization.py:143: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(**kwargs)
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ batch_normalization                  │ (None, 3)                   │              12 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 256)                 │           1,024 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 256)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 238)                 │          61,166 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 238)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 5)                   │           1,195 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 63,397 (247.64 KB)
+ Trainable params: 63,391 (247.62 KB)
+ Non-trainable params: 6 (24.00 B)
+None
+132/132 ━━━━━━━━━━━━━━━━━━━━ 0s 1ms/step - accuracy: 0.4624 - loss: 1.2288   
+Tensorflow Network trained with 0.46 accuracy on the test data
+1316/1316 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step   
+264/264 ━━━━━━━━━━━━━━━━━━━━ 0s 1ms/step 
