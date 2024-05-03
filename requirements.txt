@@ -5,9 +5,10 @@ scikit-learn
 matplotlib
 joblib
 seaborn
+pickle
 
 # TensorFlow and Keras
 tensorflow
-keras-tuner
+keras
 
 # Add more libraries as needed
