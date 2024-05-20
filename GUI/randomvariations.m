@@ -13,6 +13,15 @@ for i = 1:num_variations
     vdvars(i,:) = dvars_array.*(1+alpha);
 end
 
-vdvars = vertcat(dvars_array,vdvars);
+%vdvars = vertcat(dvars_array,vdvars);
 vdvars_tab = array2table(vdvars,"VariableNames",dvars_names);
+
+for variable = dvars_names
+    if ismember(variable,["OSR","Adc","Adc1","Adc2","Adc3","Adc4"])
+        vdvars_tab.(variable{1}) = round(vdvars_tab.(variable{1}));
+    end
+end
+
+vdvars_tab = vertcat(dvars,vdvars_tab);
+
 writetable(vdvars_tab,'vdvars_tab.csv')

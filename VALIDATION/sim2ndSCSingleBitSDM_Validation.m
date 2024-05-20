@@ -5,16 +5,16 @@ clear;
 close all;
 tStart1 = cputime;
 
-SDMmodel = 'SecondOrderSingleBitSC_PMM';
+SDMmodel = 'SecondOrderSingleBitSC';
 load_system(SDMmodel);
 load('2ndSCSDM_GP.mat');
 
 classifier_model = 'GB';
-num_iterations = 1;
+num_iterations = 10;
 validation = {'ANN','LUT'};
 
 %% Run simulations for each iteration dataset
-for k = 1:1
+for k = 1:2
     val = validation{k};
     data_path = [cd,'/VAL-DS/Multiple-Iterations-',val,'/classifier',classifier_model,'_2ndSCSDM_SingleBit_val_'];
     variables_filePath = '2ndSCSDM_GP.mat';
@@ -23,17 +23,17 @@ for k = 1:1
         % Read data
         table = importfile_SC([data_path,num2str(i),'.csv']);
         [rows,~]=size(table);
-        rows = 10;
+        %rows = 10;
 
         if i == 1
-            SNR_asked = table.SNR;
+            SNDR_asked = table.SNDR;
             power_asked = table.Power;
             Bw_asked = table.Bw;
-            fom_asked = SNR_asked+10*log10(Bw_asked./power_asked);
+            fom_asked = SNDR_asked+10*log10(Bw_asked./power_asked);
         
-            SNR_sim = zeros(rows,num_iterations);
-            power_sim = SNR_sim;
-            fom_sim = SNR_sim;
+            SNDR_sim = zeros(rows,num_iterations);
+            power_sim = SNDR_sim;
+            fom_sim = SNDR_sim;
         end
     
         % Parameters
@@ -84,17 +84,25 @@ for k = 1:1
         vn_dt = reshape(arrayfun(@(obj) obj.Variables(5).Value, SDin),[],1);
         fs_dt = reshape(arrayfun(@(obj) obj.Variables(7).Value, SDin),[],1);
         bw_dt = reshape(arrayfun(@(obj) obj.Variables(8).Value, SDin),[],1);
+        fin_dt = reshape(arrayfun(@(obj) obj.Variables(9).Value, SDin),[],1);
         alfa = 0.05;
         power = 2*io_dt*(1 + alfa);
-        snr = reshape(arrayfun(@(obj) obj.SNRArray, SDout,'UniformOutput',false),[],1);
-        snr = cell2mat(snr);
+        %SNDR = reshape(arrayfun(@(obj) obj.SNDRArray, SDout,'UniformOutput',false),[],1);
+        %SNDR = cell2mat(SNDR);
+        
+        sndr = zeros(rows,1);
 
-        SNR_sim(:,i) = snr;
+        for n = 1:rows
+            sndr(n) = fsnr(SDout(1,n).y, 1, N, fs_dt(n), fin_dt(n), bw_dt(n), 30, 30, 1, 1, 2);
+        end
+        
+
+        SNDR_sim(:,i) = sndr;
         power_sim(:,i) = power;
-        fom_sim(:,i) = SNR_sim(:,i)+10*log10(bw_dt./power_sim(:,i));
+        fom_sim(:,i) = SNDR_sim(:,i)+10*log10(bw_dt./power_sim(:,i));
     end
 
-    save(['VAL-DS/sim_2ndSCSBSDM_',val,'_',classifier_model,'_',num2str(num_iterations),'.mat'],"SNR_asked","SNR_sim","power_sim","power_asked","fom_sim","fom_asked")
+    save(['VAL-DS/sim_2ndSCSBSDM_',val,'_',classifier_model,'_',num2str(num_iterations),'.mat'],"SNDR_asked","SNDR_sim","power_sim","power_asked","fom_sim","fom_asked")
 
 end
 
@@ -114,7 +122,7 @@ function SCANN2ndSBSDMval29 = importfile_SC(filename, dataLines)
     opts.Delimiter = ",";
     
     % Specify column names and types
-    opts.VariableNames = ["SNR", "Bw", "Power", "OSR", "Adc", "gm", "Io", "Vn"];
+    opts.VariableNames = ["SNDR", "Bw", "Power", "OSR", "Adc", "gm", "Io", "Vn"];
     opts.VariableTypes = ["double", "double", "double", "double", "double", "double", "double", "double"];
     
     % Specify file level properties

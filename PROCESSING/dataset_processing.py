@@ -11,7 +11,7 @@ os.chdir(dirrepo)
 # %% Load datasets
 # The default datasets folder name is 'DATASET0/'. If dataset files are in other folder, replace the next line by
 # '<folder_name>/'. 
-datasetrawfolder = 'DATASET-raw/'
+datasetrawfolder = 'DATASETS/'
 datasetfolder = 'DATASET/'
 datasetspath = 'PROCESSING/' + datasetrawfolder
 datasetfiles = os.listdir(datasetspath)
@@ -23,32 +23,34 @@ for file in datasetfiles:
     dataframe = pd.read_csv(filepath)
     dataframes.append(dataframe)
 
-# %% Filtering points by SNR
+# %% Filtering points by SNDR
 
-def filter_snr(df,snr_min,snr_max):
-    snr = df['SNR']
-    idx = (snr_min < snr) & (snr < snr_max)
+def filter_SNDR(df,sndr_min,sndr_max):
+    if 'BW' in df.columns:
+        df.rename(columns={'BW': 'Bw'}, inplace=True)
+    sndr = df['SNDR']
+    idx = (sndr_min < sndr) & (sndr < sndr_max)
     filtered_df = df[idx]
     return filtered_df
 
-# SNR bounds
+# sndr bounds
 
-print('Specify SNR bounds. If inputs are not numbers, default values are (50,150) ')
+print('Specify SNDR bounds. If inputs are not numbers, default values are (50,150) ')
 try:
-    snr_min = float(input('Minimum SNR value (dB): '))
-    print('Your choice: {}'.format(snr_min))
+    sndr_min = float(input('Minimum SNDR value (dB): '))
+    print('Your choice: {}'.format(sndr_min))
 except ValueError:
-    snr_min = 50
-    print('Input is not a number. Minimum SNR set to 50 dB.')
+    sndr_min = 50
+    print('Input is not a number. Minimum SNDR set to 50 dB.')
 
 try:
-    snr_max = float(input('Maximum SNR value (dB): '))
-    print('Your choice: {}'.format(snr_max))
+    sndr_max = float(input('Maximum SNDR value (dB): '))
+    print('Your choice: {}'.format(sndr_max))
 except ValueError:
-    snr_max = 150
-    print('Input is not a number. Maximum SNR set to 150 dB.')
+    sndr_max = 150
+    print('Input is not a number. Maximum SNDR set to 150 dB.')
 
-filtereddataframes = [filter_snr(df,snr_min=snr_min,snr_max=snr_max) for df in dataframes]
+filtereddataframes = [filter_SNDR(df,sndr_min=sndr_min,sndr_max=sndr_max) for df in dataframes]
 
 # If both exist, delete one of the columns OSR or fs (they are correlated by Bw)
 for i in range(len(filtereddataframes)):
@@ -76,7 +78,7 @@ for i in range(num_dfs):
 # %% Creating total dataset for classifiers training
 
 # Obtaining dataframes with only specs columns
-specs = ['SNR','Bw','Power']
+specs = ['SNDR','Bw','Power']
 specsdataframes = [df[specs] for df in filtereddataframes]
 
 # The smallest dataset determines the size of the total dataset. We obtain a subset of each dataframe with as many rows as the smallest one
@@ -118,10 +120,10 @@ palette = sns.color_palette(n_colors=len(df_total['Category'].unique()))
 # Plot each category separately with a legend
 for i, cat in enumerate(df_total['Category'].unique()):
     subset = df_total[df_total['Category'] == cat]
-    ax.scatter(subset['SNR'], np.log10(subset['Bw']), subset['Power'], label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
+    ax.scatter(subset['SNDR'], np.log10(subset['Bw']), subset['Power'], label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
 
 # Set axis labels
-ax.set_xlabel('SNR (dB)')
+ax.set_xlabel('SNDR (dB)')
 ax.set_ylabel('Bw (Hz, 10^)')
 ax.set_zlabel('Power (W)')
 
@@ -129,9 +131,9 @@ ax2 = fig.add_subplot(224)
 
 for i, cat in enumerate(df_total['Category'].unique()):
     subset = df_total[df_total['Category'] == cat]
-    ax2.scatter(subset['SNR'], np.log10(subset['Bw']), label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
+    ax2.scatter(subset['SNDR'], np.log10(subset['Bw']), label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
 
-ax2.set_xlabel('SNR (dB)')
+ax2.set_xlabel('SNDR (dB)')
 ax2.set_ylabel('BW (Hz, 10^)')
 
 ax3 = fig.add_subplot(223)
@@ -147,9 +149,9 @@ ax4 = fig.add_subplot(222)
 
 for i, cat in enumerate(df_total['Category'].unique()):
     subset = df_total[df_total['Category'] == cat]
-    ax4.scatter(subset['SNR'], subset['Power'], label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
+    ax4.scatter(subset['SNDR'], subset['Power'], label=cat, c=[palette[i]], s=10, alpha=0.5, marker='.')
 
-ax4.set_xlabel('SNR (dB)')
+ax4.set_xlabel('SNDR (dB)')
 ax4.set_ylabel('Power (W)')
 
 
@@ -164,8 +166,11 @@ plt.title(datasetfolder.replace('/',''))
 
 # Save the plot
 plotpath = 'CLASSIFIERS/plots/'
-scatterpath = plotpath + 'scatter/CLSF_total_dataset_scatter.png'
-plt.savefig(scatterpath)
+scatterpath = plotpath + 'scatter/'
+if not os.path.exists(scatterpath):
+    os.makedirs(scatterpath)
+scatterimagepath = scatterpath + 'CLSF_total_dataset_scatter.png'
+plt.savefig(scatterimagepath)
 
 plt.clf()
 
@@ -177,14 +182,14 @@ l = len(df_total)
 fom = [0 for k in range(l)]
 
 for i in range(l):
-    snr = df_total.iat[i,0]
+    sndr = df_total.iat[i,0]
     bw = df_total.iat[i,1]
     power = df_total.iat[i,2]
-    fom[i] = snr + 10*log10(bw/power)
+    fom[i] = sndr + 10*log10(bw/power)
 
 fomdf = pd.DataFrame()
 
-for i in range(5):
+for i in range(len(datasetfiles)):
     fom_list = fom[min_len*i:min_len*(i+1)]
     fomdf[modelnames[i]] = fom_list
 
@@ -196,5 +201,8 @@ plt.xlabel('FOM (dB)')
 plt.title(datasetfolder.replace('/',''))
 
 # Saving data
-histogrampath = plotpath + 'FOMhistogram/CLSF_total_dataset_histogram.png'
-plt.savefig(histogrampath)
+histogrampath = plotpath + 'FOMhistogram/'
+if not os.path.exists(histogrampath):
+    os.makedirs(histogrampath)
+histogramimagepath = histogrampath + 'CLSF_total_dataset_histogram.png'
+plt.savefig(histogramimagepath)

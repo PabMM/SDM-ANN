@@ -24,6 +24,15 @@ print('Script directory: ', dirscript)
 os.chdir(dirscript)
 print('Working directory changed to: ', os.getcwd())
 
+if not os.path.exists('models/'):
+    os.makedirs('models/')
+if not os.path.exists('scalers/'):
+    os.makedirs('scalers/')
+if not os.path.exists('NSA/'):
+    os.makedirs('NSA/')
+if os.path.exists('tb_logs/'):
+    os.makedirs('tb_logs/')
+
 
 #%%
 # Tune Model architecture
@@ -60,7 +69,7 @@ def call_existing_code(units,num_layers,dropout,activation,optimizer):
         x = keras.layers.LayerNormalization( scale=True, center=True, axis=-1)(x)
 
     # regression output
-    out_reg = keras.layers.Dense(num_outputs_params, activation=activation,name = 'regression')(x)
+    out_reg = keras.layers.Dense(num_outputs_params, activation="relu",name = 'regression')(x)
 
     # define model
     model = keras.Model(inputs=input_vector, outputs = out_reg)
@@ -103,8 +112,8 @@ for file in datasetfiles:
     columns_names = list(df.columns)
 
     # split into input (x) and output (y) variables
-    specs_columns = df[['SNR','Bw','Power']].values
-    design_vars = df.drop(['SNR', 'Bw','Power'], axis=1).values
+    specs_columns = df[['SNDR','Bw','Power']].values
+    design_vars = df.drop(['SNDR', 'Bw','Power'], axis=1).values
 
 
     num_inputs = specs_columns.shape[1] #specs should be the same regardless the architecture
@@ -167,7 +176,7 @@ for file in datasetfiles:
     tend = timeit.default_timer()
     ETA = tend - tstart
     print(f'{model_name} re-training time: {ETA:.2f}s')
-    model.save('models/'+model_name,overwrite= True)
+    model.save('models/'+model_name+'.keras',overwrite= True)
 
     # print model
     print(model.summary())

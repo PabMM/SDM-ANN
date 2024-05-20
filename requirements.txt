@@ -5,7 +5,6 @@ scikit-learn
 matplotlib
 joblib
 seaborn
-pickle
 
 # TensorFlow and Keras
 tensorflow

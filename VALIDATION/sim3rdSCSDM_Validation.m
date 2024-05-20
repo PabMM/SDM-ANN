@@ -5,35 +5,35 @@ clear;
 close all;
 tStart1 = cputime;
 
-SDMmodel = 'ThirdOrderCascadeSingleBitSC_PMM';
+SDMmodel = 'ThirdOrderCascadeSingleBitSC';
 load_system(SDMmodel);
-load('3rdSCSDM_GP.mat');
+load('3rd21SCSDM_GP.mat');
 
 classifier_model = 'GB';
 num_iterations = 10;
 validation = {'ANN','LUT'};
 
 %% Run simulations for each iteration dataset
-for k = 1:1
+for k = 1:2
     val = validation{k};
-    data_path = [cd,'/VAL-DS/Multiple-Iterations-',val,'/classifier',classifier_model,'_3rd21SCSDM_val_'];
-    variables_filePath = '3rdSCSDM_GP.mat';
+    data_path = [cd,'/VAL-DS/Multiple-Iterations-',val,'/classifier',classifier_model,'_3or21SCSDM_val_'];
+    variables_filePath = '3rd21SCSDM_GP.mat';
     
     for i = 1:num_iterations
         % Read data
         table = importfile_SC([data_path,num2str(i),'.csv']);
         [rows,~]=size(table);
-        rows = 10;
+        %rows = 10;
     
         if i == 1
-            SNR_asked = table.SNR;
+            SNDR_asked = table.SNDR;
             power_asked = table.Power;
             Bw_asked = table.Bw;
-            fom_asked = SNR_asked+10*log10(Bw_asked./power_asked);
+            fom_asked = SNDR_asked+10*log10(Bw_asked./power_asked);
         
-            SNR_sim = zeros(rows,num_iterations);
-            power_sim = SNR_sim;
-            fom_sim = SNR_sim;
+            SNDR_sim = zeros(rows,num_iterations);
+            power_sim = SNDR_sim;
+            fom_sim = SNDR_sim;
         end
     
         % Parameters
@@ -77,7 +77,7 @@ for k = 1:1
         fprintf('Running parallel simulations')
         SDout=parsim(SDin,'ShowProgress','on','TransferBaseWorkspaceVariables','on',...
             'AttachedFiles',variables_filePath,...
-            'SetupFcn',@()evalin('base','load 3rdSCSDM_GP.mat')); 
+            'SetupFcn',@()evalin('base','load 3rd21SCSDM_GP.mat')); 
         disp(cputime - tStart2)
         fprintf('Saving Data ...')
         
@@ -90,16 +90,23 @@ for k = 1:1
         io2_r = reshape(arrayfun(@(obj) obj.Variables(9).Value, SDin), [], 1);
         bw = reshape(arrayfun(@(obj) obj.Variables(10).Value, SDin), [], 1);
         fs_r = reshape(arrayfun(@(obj) obj.Variables(2).Value, SDin), [], 1);
-        snr = reshape(arrayfun(@(obj) obj.SNRArray, SDout),[],1);
+        fin_r = reshape(arrayfun(@(obj) obj.Variables(11).Value, SDin), [], 1);
+        %SNDR = reshape(arrayfun(@(obj) obj.SNDRArray, SDout),[],1);
         alfa = 0.05;
         power = (io1_r + io2_r)*(1 + alfa) + io2_r*(1+alfa);
+        
+        sndr = zeros(rows,1);
 
-        SNR_sim(:,i) = snr;
+        for n = 1:rows
+            sndr(n) = fsnr(SDout(1,n).y, 1, N, fs_r(n), fin_r(n), bw(n), 30, 30, 1, 1, 2);
+        end
+
+        SNDR_sim(:,i) = sndr;
         power_sim(:,i) = power;
-        fom_sim(:,i) = SNR_sim(:,i)+10*log10(bw./power_sim(:,i));
+        fom_sim(:,i) = SNDR_sim(:,i)+10*log10(bw./power_sim(:,i));
     end
 
-    %save(['VAL-DS/sim_3rdSCSDM_',val,'_',classifier_model,'_',num2str(num_iterations),'.mat'],"SNR_asked","SNR_sim","power_sim","power_asked","fom_sim","fom_asked")
+    save(['VAL-DS/sim_3rdSCSDM_',val,'_',classifier_model,'_',num2str(num_iterations),'.mat'],"SNDR_asked","SNDR_sim","power_sim","power_asked","fom_sim","fom_asked")
 
 end
 
@@ -119,7 +126,7 @@ opts.DataLines = dataLines;
 opts.Delimiter = ",";
 
 % Specify column names and types
-opts.VariableNames = ["SNR", "Bw", "Power", "OSR", "Adc1", "gm1", "Io1", "Adc2", "gm2", "Io2"];
+opts.VariableNames = ["SNDR", "Bw", "Power", "OSR", "Adc1", "gm1", "Io1", "Adc2", "gm2", "Io2"];
 opts.VariableTypes = ["double", "double", "double", "double", "double", "double", "double", "double", "double", "double"];
 
 % Specify file level properties

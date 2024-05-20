@@ -1,5 +1,5 @@
 clear;
-modulators = {'2ndGmCSDM','2ndSCMBSDM','2ndSCSBSDM','3rdSCSDM','4th211SCSDM'};
+modulators = {'2ndSCMBSDM','2ndSCSBSDM','3rdSCSDM','4th211SCSDM'};
 model_names = {'ANN_GB','LUT_GB'};
 num_iterations = [1,10];
 i = 1;

@@ -25,8 +25,14 @@ from Lib import save_model
 
 import timeit
 
+if not os.path.exists('model/'):
+  os.makedirs('model/')
+if not os.path.exists('Confusion_Matrices/'):
+  os.makedirs('Confusion_Matrices/')
+
+
 #%% datareading and normalizatino
-csv_file="dataset_total_V2.csv"
+csv_file="CLSF_total_dataset.csv"
 dataframe = pd.read_csv(csv_file)
 
 def print_hash():

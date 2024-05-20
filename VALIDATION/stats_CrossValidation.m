@@ -1,5 +1,5 @@
 clear;clc
-modulators = {'2ndGmCSDM','2ndSCMBSDM','2ndSCSBSDM','3rdSCSDM','4th211SCSDM'};
+modulators = {'2ndSCMBSDM','2ndSCSBSDM','3rdSCSDM','4th211SCSDM'};
 model_names = {'ANN_GB','LUT_GB'};
 num_iterations = [1,10];
 n_mod = 5;
@@ -26,7 +26,7 @@ load(data_path)
 fom_sim = fom_sim(:,1:num_iterations);
 
 
-SNR_sim = SNR_sim(:,1:num_iterations);
+SNDR_sim = SNDR_sim(:,1:num_iterations);
 power_sim = power_sim(:,1:num_iterations);
 
 
@@ -39,16 +39,16 @@ auy = aux;
  i = 1;
 for j =1:length(J)
 
-    aux(i,1) = SNR_sim(i,J(j));
+    aux(i,1) = SNDR_sim(i,J(j));
     auy(i,1) = power_sim(i,J(j));
     i = i+1;
 end
-SNR_sim = aux; clear aux
+SNDR_sim = aux; clear aux
 power_sim = auy; clear auy
 
 
 err_fom = real((fom_sim-fom_asked)./fom_asked);
-err_SNR = double((SNR_sim-SNR_asked)./SNR_asked);
+err_SNR = double((SNDR_sim-SNDR_asked)./SNDR_asked);
 err_power = double((power_sim-power_asked)./power_asked);
 
 
