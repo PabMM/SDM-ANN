@@ -22,18 +22,25 @@ The objective of this repository is to provide machine learning tools to assist 
 
 To set up the necessary environment for running the scripts in this repository, follow the steps below:
 
-## 0. **Check Python version**
+## 0. **Install SIMSIDES**
+
+In order to perform behavioral simulations, you must install [SIMSIDES](http://www2.imse-cnm.csic.es/simsides/).
+
+- To install SIMSIDES, you must fill out the registration form. A copy will be sent to you by email.
+- **IMPORTANT:** remember to add SIMSIDES to the MATLAB path once installed.  To do so, click the `Set Path` button of the Home tab in MATLAB, then `Add with Subfolders...` and select the SIMSIDES folder. Alternatively, you can also add folders to the path by right-clicking on them in the Current Folder block, and then Add to Path -> Selected Folders and Subfolders.
+
+## 1. **Check Python version**
 
 In order to use the MATLAB App, your MATLAB and Python versions must be compatible. You can check the Python compatible versions with MATLAB by release [here](https://es.mathworks.com/support/requirements/python-compatibility.html). To check what your Python version is, open a terminal and type `python --version` or simply `python -V`.
 
-## 1. **Clone the Repository:**
+## 2. **Clone the Repository:**
 Open a terminal and navigate with `cd` to the directory you want to clone the repository. Then run the following commands:
  ```bash
 git clone https://github.com/PabMM/SDM-ANN
 cd <repository_directory>
 ```
 
-## 2. **Create Virtual Environment (Optional but recommended)**
+## 3. **Create Virtual Environment (Optional but recommended)**
 We do recommend using virtual environments in order to avoid conflicts with other libraries in your system. 
 
 ### INSTRUCTIONS:
@@ -65,15 +72,13 @@ We do recommend using virtual environments in order to avoid conflicts with othe
    [Here](https://docs.python.org/3/library/venv.html) you have additional information about virtual environments.
    
    
-## 3. **Install Dependencies:**
-- In order to use the repository, you must install the python libraries in the script `requirements.txt`. You can do this with
+## 4. **Install Dependencies:**
+In order to use the repository, you must install the python libraries in the script `requirements.txt`. You can do this with
 ```bash
 pip install -r requirements.txt (optionally you can use pip3)
 ```
 
-- You must also install [SIMSIDES](http://www2.imse-cnm.csic.es/simsides/) in order to perform behavioral simulations.
-
-## 4. **Python configuration in MATLAB**
+## 5. **Python configuration in MATLAB**
 
 To change the default environment of the Python interpreter in MATLAB, run the following command in the MATLAB Command Window:
 
@@ -92,8 +97,3 @@ python
 ```
 
 In the following links you can also find additional information on [pyenv](https://es.mathworks.com/help/matlab/ref/pyenv.html) and [virtual environments with Matlab](https://es.mathworks.com/matlabcentral/answers/1750425-python-virtual-environments-with-matlab).
-
-
-## 5. **Set MATLAB path**
-
-To ensure the MATLAB application works correctly, you need to add both SIMSIDES and this repository to the MATLAB path. To do so, click the `Set Path` button of the Home tab in MATLAB, then `Add with Subfolders...` and select the SIMSIDES and SDM-ANN folders. Alternatively, you can also add folders to the path by right-clicking on them in the Current Folder block, and then Add to Path -> Selected Folders and Subfolders.
