@@ -42,7 +42,7 @@ def classifier_prediction(sndr,bw,power,classifier='GB'):
     # Make prediction
     predicted_class = classifier.predict(scaled_specs)[0]
     pc = classifier.predict(scaled_specs)
-    print(pc)
+    #print(pc)
    
 
     return predicted_class
