@@ -13,10 +13,13 @@ The objective of this repository is to provide machine learning tools to assist 
 - **regression_ann_NSA.py**: A script for building, training, and evaluating a neural network-based regression model using TensorFlow and Keras. The script includes hyperparameter tuning and outputs various results, including model visualizations and Mean Squared Error (MSE) metrics.
 
 ## 4. VALIDATION
-- to complete
+This folder contains scripts that evaluate the RNNs performance comparing with a Look-Up-Table method and performing cross-validation via behavioral simulations to check that the RNNs output design variables that actually lead to the asked specifications.
 
 ## 5. GUI
-- to complete
+This folder contains the files necessary to use a Graphical User Interface that allows easy and intuitive use of the classification model and neural networks. It enables performing inferences for user-provided specifications, as well as simulations that allow both validation and optimization of the obtained results.
+
+## 6. MODELS
+This folder contains the Simulink models necessary to run the simulations.
 
 # Installation
 
