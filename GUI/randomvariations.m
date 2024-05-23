@@ -19,6 +19,8 @@ vdvars_tab = array2table(vdvars,"VariableNames",dvars_names);
 for variable = dvars_names
     if ismember(variable,["OSR","Adc","Adc1","Adc2","Adc3","Adc4"])
         vdvars_tab.(variable{1}) = round(vdvars_tab.(variable{1}));
+    else
+        vdvars_tab.(variable{1}) = round(vdvars_tab.(variable{1})*1e6) ./ 1e6;
     end
 end
 
