@@ -86,15 +86,41 @@ def rnn_prediction(sndr,bw,power,model):
     #return predicted_dvars
 
 
-# %%
-#pred1 = classifier_prediction(80,600000,0.008)
-#print('Chosen modulator by classifier: ',pred1)
-#pred2 = rnn_prediction(70,100000,0.008,pred1)
-#print('Predicted design variables: \n', pred2)
+def inverse_rnn_prediction(model,dvars_file='dvars.csv'):
+    """
+    Perform SDM specifications prediction given a set of specifications using a RNN model.
+    
+    Args:
+        - dvars: Pandas Dataframe whose columns names are the design variables names and each value is stored in its corresponding column.
+        - model: SDM model inverse RNN to use (string)
+    
+    Saves:
+        - pred_specs.csv: CSV file containing predicted specifications
+    """
+    
+    dvars = pd.read_csv(dvars_file)
 
-#l1 = ['a','b','c']
-#l2 = [1,2,3]
-#l = zip(l1,l2)
-#d = dict(l)
-#print(l)
-#print(d)
+    specs_names = ['SNDR','Bw','Power']
+
+    # Load scaler
+    scaler = joblib.load('../SPECS_PREDICTOR_ANN/scalers/model_RNN_' + model + '_scaler.gz')
+    #scaled_dvars = scaler.transform(dvars)
+
+    # Load model and perform predictions
+    model = keras.saving.load_model('../SPECS_PREDICTOR_ANN/models/RNN_' + model + '.keras')
+    predicted_specs = model.predict(dvars, verbose=0)
+    predicted_specs = scaler.inverse_transform(predicted_specs)
+    predicted_specs = pd.DataFrame(predicted_specs, columns = specs_names)
+
+    predicted_specs.to_csv('pred_specs.csv',index=False)
+
+# %%
+#sndr = 95
+#bw = 100000
+#power = 0.025
+
+#model = classifier_prediction(sndr,bw,power)
+#rnn_prediction(sndr,bw,power,model)
+
+
+#specs = inverse_rnn_prediction(model)

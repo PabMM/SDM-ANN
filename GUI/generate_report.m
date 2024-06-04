@@ -4,8 +4,9 @@ rpt = Report('report','pdf');
 rpt.Locale = 'english';
 
 tp = TitlePage;
-tp.Title = 'SDM-App report';
+tp.Title = 'AISAD report';
 tp.PubDate = date();
+tp.Image = which("logo_bw.png");
 add(rpt,tp);
 
 secspecs = Section; 
@@ -37,10 +38,31 @@ append(sec1,blankline)
 append(secspecs,sec1) 
 
 sec2=Section; 
-sec2.Title = 'RNN Output Specifications';
+sec2.Title = 'RNN Resulting Specifications';
 sec2.Numbered = false;
 
-rnnspecstext = Paragraph('The RNN verified specifications were:');
+inversernntext = Paragraph('The inverse-RNN estimated specifications were:');
+append(sec2,inversernntext)
+append(sec2,blankline)
+
+pred_specs = readtable('pred_specs.csv');
+inverseSNDR = pred_specs.SNDR;
+inverseBW = inspecs.("BW (Hz)");
+inversePower = pred_specs.Power;
+inverseFOM = inverseSNDR + 10*log10(inverseBW / inversePower);
+inversetable = horzcat(inverseFOM,inverseSNDR,inverseBW,inversePower);
+inversetable = array2table(inversetable);
+inversetable.Properties.VariableNames = {'FOM (dB)','SNDR (dB)','BW (Hz)','Power (W)'};
+
+tinversetable = Table(inversetable);
+tinversetable.BackgroundColor = 'azure';
+tinversetable.RowSep = 'solid';
+
+append(sec2,tinversetable)
+append(sec2,blankline)
+
+
+rnnspecstext = Paragraph('The verified specifications were:');
 append(sec2,rnnspecstext)
 append(sec2,blankline)
 
@@ -87,7 +109,7 @@ para = Paragraph(strcat('The selected architecture by the classifier was:  ',arc
 append(secarch,para);
 append(secarch,blankline)
 
-figfile = strcat('Figures/',architecture,'.jpg');
+figfile = strcat('Figures/',architecture,'.png');
 imgarch = imread(figfile);
 clf;
 imagesc(imgarch);
@@ -146,7 +168,34 @@ tdvars.ColSep = 'solid';
 
 append(secdvars,tdvars)
 
+note = Paragraph('Note (units): gm (A/V), Io (A), Vn (V/(Hz**(1/2)))');
+append(secdvars,note)
+
 append(rpt,secdvars)
+
+secfixedparams = Section;
+secfixedparams.Title = 'Fixed Parameters';
+secfixedparams.Numbered = false;
+
+fixparamstext = Paragraph('The fixed parameters for the selected architecture are:');
+append(secfixedparams,fixparamstext)
+append(secfixedparams,blankline)
+
+if architecture == '3or21SCSDM'
+    data = load('3rd21SCSDM_GP.mat');
+else
+    data = load(strcat(architecture,'_GP.mat'));
+end
+fptable = struct2table(data);
+fpt = rows2vars(fptable);
+fpt.Properties.VariableNames = {'Name','Value'};
+
+fixedparamstable = Table(fpt);
+fixedparamstable.BackgroundColor = 'azure';
+fixedparamstable.ColSep = 'solid';
+
+append(secfixedparams,fixedparamstable)
+append(rpt,secfixedparams)
 
 secpsd = Section;
 secpsd.Title = 'Power Spectral Density Graph';
