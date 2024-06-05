@@ -21,6 +21,9 @@ This folder contains the files necessary to use a Graphical User Interface that 
 ## 6. MODELS
 This folder contains the Simulink models necessary to run the simulations.
 
+## 7. SPECS_PREDICTOR_ANN
+This folder contains the models and necesary scalers to perform "inverse" predictions (obtain specifications from design variables).
+
 # Installation
 
 To set up the necessary environment for running the scripts in this repository, follow the steps below:
